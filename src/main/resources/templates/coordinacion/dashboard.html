@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Dashboard Coordinación')}"></head>
+<body>
+<div class="d-flex">
+    <div th:replace="~{layout :: navbar}"></div>
+    <div class="main-content w-100">
+        <div class="topbar">
+            <h5 class="page-title"><i class="fas fa-tachometer-alt me-2 text-info"></i>Dashboard Coordinación</h5>
+            <small class="text-muted">Bienvenido, <span sec:authentication="name"></span></small>
+        </div>
+        <div class="content-area">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="stat-card" style="background:linear-gradient(135deg,#2980b9,#1a5276);">
+                        <div class="stat-num" th:text="${totalAlumnos}">0</div>
+                        <div class="stat-label"><i class="fas fa-users me-1"></i>Total Alumnos</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card" style="background:linear-gradient(135deg,#27ae60,#196f3d);">
+                        <div class="stat-num" th:text="${totalAprobados}">0</div>
+                        <div class="stat-label"><i class="fas fa-check-circle me-1"></i>Aprobados Saber Pro</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card" style="background:linear-gradient(135deg,#f39c12,#b7770d);">
+                        <div class="stat-num" th:text="${totalBeneficios}">0</div>
+                        <div class="stat-label"><i class="fas fa-award me-1"></i>Con Beneficio</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" style="background:#1a3a5c;color:white;">
+                    <i class="fas fa-bolt me-2"></i>Acciones Rápidas
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <a th:href="@{/coordinacion/alumnos/nuevo}" class="btn btn-outline-primary w-100 py-3">
+                                <i class="fas fa-user-plus d-block mb-2" style="font-size:24px;"></i>Nuevo Alumno
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a th:href="@{/coordinacion/alumnos}" class="btn btn-outline-secondary w-100 py-3">
+                                <i class="fas fa-users d-block mb-2" style="font-size:24px;"></i>Ver Alumnos
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a th:href="@{/coordinacion/informe/total}" class="btn btn-outline-info w-100 py-3">
+                                <i class="fas fa-file-alt d-block mb-2" style="font-size:24px;"></i>Informe Total
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a th:href="@{/coordinacion/informe/beneficios}" class="btn btn-outline-warning w-100 py-3">
+                                <i class="fas fa-award d-block mb-2" style="font-size:24px;"></i>Beneficios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

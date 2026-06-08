@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Alumnos')}"></head>
+<body>
+<div class="d-flex">
+    <div th:replace="~{layout :: navbar}"></div>
+    <div class="main-content w-100">
+        <div class="topbar">
+            <h5 class="page-title"><i class="fas fa-users me-2 text-info"></i>Gestión de Alumnos</h5>
+            <a th:href="@{/coordinacion/alumnos/nuevo}" class="btn btn-primary btn-sm">
+                <i class="fas fa-user-plus me-1"></i>Nuevo Alumno
+            </a>
+        </div>
+        <div class="content-area">
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i><span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div class="card">
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-3">#</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cédula</th>
+                                <th>Email</th>
+                                <th>Facultad</th>
+                                <th class="text-center">Saber Pro</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="a, i : ${alumnos}">
+                                <td class="px-4" th:text="${i.count}"></td>
+                                <td th:text="${a.nombre}"></td>
+                                <td th:text="${a.apellido}"></td>
+                                <td><code th:text="${a.cedula}"></code></td>
+                                <td th:text="${a.email}"></td>
+                                <td>
+                                    <span th:if="${a.facultad}" class="badge bg-primary" th:text="${a.facultad.nombre}"></span>
+                                    <span th:unless="${a.facultad}" class="text-muted">—</span>
+                                </td>
+                                <td class="text-center">
+                                    <span th:if="${a.aprobadoSaberPro}" class="badge bg-success"><i class="fas fa-check me-1"></i>Aprobado</span>
+                                    <span th:unless="${a.aprobadoSaberPro}" class="badge bg-secondary">Pendiente</span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/coordinacion/alumnos/editar/{id}(id=${a.id})}"
+                                       class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></a>
+                                    <a th:unless="${a.aprobadoSaberPro}"
+                                       th:href="@{/coordinacion/alumnos/aprobar/{id}(id=${a.id})}"
+                                       class="btn btn-sm btn-outline-success me-1"
+                                       title="Aprobar Saber Pro"
+                                       onclick="return confirm('¿Aprobar este alumno para Saber Pro?')">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a th:href="@{/coordinacion/alumnos/eliminar/{id}(id=${a.id})}"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('¿Eliminar este alumno?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(alumnos)}">
+                                <td colspan="8" class="text-center text-muted py-5">
+                                    <i class="fas fa-inbox fa-3x mb-2 d-block"></i>No hay alumnos registrados
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

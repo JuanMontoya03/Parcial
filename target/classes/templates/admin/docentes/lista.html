@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Docentes')}"></head>
+<body>
+<div class="d-flex">
+    <div th:replace="~{layout :: navbar}"></div>
+    <div class="main-content w-100">
+        <div class="topbar">
+            <h5 class="page-title"><i class="fas fa-chalkboard-teacher me-2" style="color:#27ae60;"></i>Gestión de Docentes</h5>
+            <a th:href="@{/admin/docentes/nuevo}" class="btn btn-success btn-sm">
+                <i class="fas fa-plus me-1"></i>Nuevo Docente
+            </a>
+        </div>
+        <div class="content-area">
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i><span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div class="card">
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-3">#</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cédula</th>
+                                <th>Email</th>
+                                <th>Facultad</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="d, i : ${docentes}">
+                                <td class="px-4" th:text="${i.count}"></td>
+                                <td th:text="${d.nombre}"></td>
+                                <td th:text="${d.apellido}"></td>
+                                <td><code th:text="${d.cedula}"></code></td>
+                                <td th:text="${d.email}"></td>
+                                <td>
+                                    <span th:if="${d.facultad}" class="badge bg-success" th:text="${d.facultad.nombre}"></span>
+                                    <span th:unless="${d.facultad}" class="text-muted">—</span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/admin/docentes/editar/{id}(id=${d.id})}"
+                                       class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/admin/docentes/eliminar/{id}(id=${d.id})}"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('¿Eliminar este docente?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(docentes)}">
+                                <td colspan="7" class="text-center text-muted py-5">
+                                    <i class="fas fa-inbox fa-3x mb-2 d-block"></i>No hay docentes registrados
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

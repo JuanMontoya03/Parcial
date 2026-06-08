@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} + ' | Saber Pro'">Saber Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #1a3a5c;
+            --accent: #f39c12;
+            --success-bg: #d4edda;
+        }
+        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .sidebar {
+            min-height: 100vh;
+            background: var(--primary);
+            color: white;
+            padding: 0;
+            width: 260px;
+            position: fixed;
+            top: 0; left: 0;
+        }
+        .sidebar .brand {
+            background: #0d2137;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--accent);
+        }
+        .sidebar .brand h5 { color: var(--accent); margin: 0; font-weight: 700; letter-spacing: 1px; }
+        .sidebar .brand small { color: #aaa; font-size: 11px; }
+        .sidebar .nav-link {
+            color: #ccd6e0;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            border-left-color: var(--accent);
+        }
+        .sidebar .nav-section {
+            padding: 10px 20px 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7a9bb5;
+            margin-top: 8px;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .topbar {
+            background: white;
+            padding: 14px 28px;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .topbar .page-title { font-weight: 600; color: var(--primary); font-size: 18px; margin: 0; }
+        .content-area { padding: 28px; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+        .card-header { border-radius: 12px 12px 0 0 !important; }
+        .stat-card { border-radius: 12px; color: white; padding: 22px; }
+        .stat-card .stat-num { font-size: 2.5rem; font-weight: 700; }
+        .stat-card .stat-label { opacity: 0.85; font-size: 14px; }
+        .btn-primary { background: var(--primary); border-color: var(--primary); }
+        .btn-primary:hover { background: #0d2137; border-color: #0d2137; }
+        .badge-role { font-size: 12px; padding: 5px 12px; border-radius: 20px; }
+        .table th { background: #f8f9fb; color: var(--primary); font-weight: 600; border: none; }
+        .table td { border-color: #f0f2f5; vertical-align: middle; }
+        .alert { border-radius: 10px; border: none; }
+    </style>
+</head>
+<body>
+
+<div th:fragment="navbar">
+    <div class="sidebar d-flex flex-column">
+        <div class="brand">
+            <div style="font-size:28px; color:var(--accent)"><i class="fas fa-graduation-cap"></i></div>
+            <h5>SABER PRO</h5>
+            <small>Sistema de Gestión</small>
+        </div>
+        <nav class="flex-grow-1 py-2">
+            <!-- ADMIN -->
+            <div sec:authorize="hasRole('ADMINISTRADOR')">
+                <div class="nav-section">Administrador</div>
+                <a class="nav-link" th:href="@{/admin/dashboard}"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+                <a class="nav-link" th:href="@{/admin/directores}"><i class="fas fa-user-tie fa-fw"></i> Directores</a>
+                <a class="nav-link" th:href="@{/admin/docentes}"><i class="fas fa-chalkboard-teacher fa-fw"></i> Docentes</a>
+                <a class="nav-link" th:href="@{/admin/facultades}"><i class="fas fa-university fa-fw"></i> Facultades</a>
+                <a class="nav-link" th:href="@{/admin/beneficios}"><i class="fas fa-award fa-fw"></i> Resolución Beneficios</a>
+            </div>
+            <!-- COORDINACION -->
+            <div sec:authorize="hasRole('COORDINACION')">
+                <div class="nav-section">Coordinación</div>
+                <a class="nav-link" th:href="@{/coordinacion/dashboard}"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+                <a class="nav-link" th:href="@{/coordinacion/alumnos}"><i class="fas fa-users fa-fw"></i> Alumnos</a>
+                <a class="nav-link" th:href="@{/coordinacion/informe/total}"><i class="fas fa-file-alt fa-fw"></i> Informe Total</a>
+                <a class="nav-link" th:href="@{/coordinacion/informe/unico}"><i class="fas fa-file fa-fw"></i> Informe Único</a>
+                <a class="nav-link" th:href="@{/coordinacion/informe/beneficios}"><i class="fas fa-award fa-fw"></i> Beneficios</a>
+            </div>
+            <!-- DOCENTE -->
+            <div sec:authorize="hasRole('DOCENTE')">
+                <div class="nav-section">Docente</div>
+                <a class="nav-link" th:href="@{/docente/dashboard}"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+                <a class="nav-link" th:href="@{/docente/alumnos/facultad}"><i class="fas fa-building fa-fw"></i> Por Facultad</a>
+                <a class="nav-link" th:href="@{/docente/alumnos/cedula}"><i class="fas fa-id-card fa-fw"></i> Por Cédula</a>
+                <a class="nav-link" th:href="@{/docente/informe/total}"><i class="fas fa-file-alt fa-fw"></i> Informe Total</a>
+                <a class="nav-link" th:href="@{/docente/informe/unico}"><i class="fas fa-file fa-fw"></i> Informe Único</a>
+                <a class="nav-link" th:href="@{/docente/informe/beneficios}"><i class="fas fa-award fa-fw"></i> Beneficios</a>
+            </div>
+            <!-- ESTUDIANTE -->
+            <div sec:authorize="hasRole('ESTUDIANTE')">
+                <div class="nav-section">Estudiante</div>
+                <a class="nav-link" th:href="@{/estudiante/dashboard}"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+                <a class="nav-link" th:href="@{/estudiante/identificacion}"><i class="fas fa-id-card fa-fw"></i> Identificación</a>
+                <a class="nav-link" th:href="@{/estudiante/pago}"><i class="fas fa-receipt fa-fw"></i> Pago Saber Pro</a>
+                <a class="nav-link" th:href="@{/estudiante/resultados/total}"><i class="fas fa-chart-bar fa-fw"></i> Resultados Total</a>
+                <a class="nav-link" th:href="@{/estudiante/resultados/unico}"><i class="fas fa-chart-line fa-fw"></i> Resultado Único</a>
+                <a class="nav-link" th:href="@{/estudiante/beneficios}"><i class="fas fa-award fa-fw"></i> Beneficios</a>
+            </div>
+        </nav>
+        <div style="padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div style="color:#aaa; font-size:12px; margin-bottom:8px;">
+                <i class="fas fa-user-circle me-1"></i>
+                <span sec:authentication="name">Usuario</span>
+                &nbsp;
+                <span sec:authorize="hasRole('ADMINISTRADOR')" class="badge" style="background:var(--accent); color:#000; font-size:9px;">ADMIN</span>
+                <span sec:authorize="hasRole('COORDINACION')" class="badge bg-info" style="font-size:9px;">COORD</span>
+                <span sec:authorize="hasRole('DOCENTE')" class="badge bg-success" style="font-size:9px;">DOC</span>
+                <span sec:authorize="hasRole('ESTUDIANTE')" class="badge bg-secondary" style="font-size:9px;">EST</span>
+            </div>
+            <a th:href="@{/logout}" class="btn btn-sm btn-outline-light w-100">
+                <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

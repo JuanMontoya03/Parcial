@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Mis Resultados')}"></head>
+<body>
+<div class="d-flex">
+    <div th:replace="~{layout :: navbar}"></div>
+    <div class="main-content w-100">
+        <div class="topbar">
+            <h5 class="page-title">
+                <i class="fas fa-chart-bar me-2 text-primary"></i>
+                Mis Resultados - <span th:text="${tipo}"></span>
+            </h5>
+            <div>
+                <a th:href="@{/estudiante/resultados/total}"
+                   th:classappend="${tipo == 'TOTAL'} ? 'btn-primary' : 'btn-outline-primary'"
+                   class="btn btn-sm me-1">Total</a>
+                <a th:href="@{/estudiante/resultados/unico}"
+                   th:classappend="${tipo == 'UNICO'} ? 'btn-primary' : 'btn-outline-primary'"
+                   class="btn btn-sm">Único</a>
+            </div>
+        </div>
+        <div class="content-area">
+            <div th:if="${resultados != null and not #lists.isEmpty(resultados)}">
+                <div class="row g-4 mb-4" th:each="r : ${resultados}">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center"
+                                 style="background:#1a3a5c;color:white;">
+                                <span><i class="fas fa-calendar me-2"></i>Periodo: <strong th:text="${r.periodo}"></strong></span>
+                                <span>
+                                    <span class="badge bg-light text-dark me-2" th:text="${r.tipoResultado}"></span>
+                                    <span th:if="${r.tieneBeneficio}" class="badge bg-warning text-dark">
+                                        <i class="fas fa-award me-1"></i>Con Beneficio
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-2 text-center">
+                                        <div class="p-3 rounded" style="background:#1a3a5c;color:white;">
+                                            <div style="font-size:2rem;font-weight:700;" th:text="${r.puntajeTotal}"></div>
+                                            <div style="font-size:11px;opacity:.8;">PUNTAJE GLOBAL</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <div class="p-2 rounded bg-light text-center">
+                                                    <div class="fw-bold" th:text="${r.puntajeLecturaCritica}">—</div>
+                                                    <div style="font-size:11px;" class="text-muted">Lectura Crítica</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="p-2 rounded bg-light text-center">
+                                                    <div class="fw-bold" th:text="${r.puntajeRazonamientoCuantitativo}">—</div>
+                                                    <div style="font-size:11px;" class="text-muted">Razon. Cuantitativo</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="p-2 rounded bg-light text-center">
+                                                    <div class="fw-bold" th:text="${r.puntajeCompetenciasCiudadanas}">—</div>
+                                                    <div style="font-size:11px;" class="text-muted">Comp. Ciudadanas</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="p-2 rounded bg-light text-center">
+                                                    <div class="fw-bold" th:text="${r.puntajeComunicacionEscrita}">—</div>
+                                                    <div style="font-size:11px;" class="text-muted">Comunicación Escrita</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="p-2 rounded bg-light text-center">
+                                                    <div class="fw-bold" th:text="${r.puntajeIngles}">—</div>
+                                                    <div style="font-size:11px;" class="text-muted">Inglés</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3" th:if="${r.descripcionBeneficio != null}">
+                                    <div class="alert alert-warning py-2 mb-0" style="font-size:13px;">
+                                        <i class="fas fa-award me-2"></i><strong>Beneficio:</strong>
+                                        <span th:text="${r.descripcionBeneficio}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info" th:if="${resultados == null or #lists.isEmpty(resultados)}">
+                <i class="fas fa-info-circle me-2"></i>
+                No tienes resultados de tipo <strong th:text="${tipo}"></strong> registrados aún.
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
